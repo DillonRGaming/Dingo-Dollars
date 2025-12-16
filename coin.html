@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dingo Dollars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="logo-container">
+            <i class="fa-solid fa-sack-dollar fa-3x"></i>
+            <h1>DINGO DOLLARS</h1>
+        </div>
+    </div>
+
+    <div id="fail-overlay">
+        <div class="fail-content">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div id="fail-text">FAILED</div>
+        </div>
+    </div>
+
+    <div id="shop-panel" class="side-panel left-panel">
+        <div id="handle-shop" class="panel-handle" onclick="toggleLeftPanel('shop-panel')">
+            <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <div class="panel-title">Shop</div>
+        <div id="shop-content"></div>
+    </div>
+
+    <div id="coin-pouch" class="side-panel left-panel">
+        <div id="handle-pouch" class="panel-handle" onclick="toggleLeftPanel('coin-pouch')">
+            <i class="fa-solid fa-sack-dollar"></i>
+        </div>
+        <div class="panel-title">Collection</div>
+        <div id="pouch-grid" class="pouch-grid"></div>
+    </div>
+
+    <div id="settings-panel" class="side-panel left-panel">
+        <div id="handle-settings" class="panel-handle" onclick="toggleLeftPanel('settings-panel')">
+            <i class="fa-solid fa-gear"></i>
+        </div>
+        <div class="panel-title">Settings</div>
+        
+        <div class="settings-row">
+            <span>Sound</span>
+            <label class="switch">
+                <input type="checkbox" id="sound-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="settings-row">
+            <span>Haptics</span>
+            <label class="switch">
+                <input type="checkbox" id="haptics-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="settings-row">
+            <span>Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="settings-row">
+            <span>Hard Mode</span>
+            <div id="hard-mode-btn" class="hard-mode-icon">
+                <i class="fa-solid fa-skull-crossbones"></i>
+            </div>
+        </div>
+        <div class="settings-row">
+            <span>Background</span>
+            <div class="custom-select-wrapper">
+                <div class="custom-select" id="background-select">
+                    <div class="custom-select-trigger">
+                        <span>None</span>
+                    </div>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="none">None</div>
+                        <div class="custom-option" data-value="checkerboard">Checkerboard</div>
+                        <div class="custom-option" data-value="lines">Lines</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="settings-row">
+            <span>Accent</span>
+            <div id="swatch-picker" class="swatch-picker">
+                <div class="swatch" style="background: #ff9f43;" data-color="#ff9f43"></div>
+                <div class="swatch" style="background: #e74c3c;" data-color="#e74c3c"></div>
+                <div class="swatch" style="background: #3498db;" data-color="#3498db"></div>
+                <div class="swatch" style="background: #9b59b6;" data-color="#9b59b6"></div>
+                <div class="swatch" style="background: #2ecc71;" data-color="#2ecc71"></div>
+                <div class="swatch" style="background: #f1c40f;" data-color="#f1c40f"></div>
+            </div>
+        </div>
+        
+        <button id="reset-btn" onclick="hardReset()">Reset Game</button>
+    </div>
+
+    <div id="dev-panel" class="side-panel right-panel">
+        <div id="handle-dev" class="panel-handle" onclick="toggleRightPanel()">
+            <i class="fa-solid fa-terminal"></i>
+        </div>
+        <div class="panel-title">Developer</div>
+        <input type="number" id="dev-val" class="dev-ctrl" min="1" value="1" placeholder="Val">
+        <input type="number" id="dev-count" class="dev-ctrl" min="1" value="1" placeholder="Count">
+        <div class="custom-select-wrapper">
+            <div class="custom-select" id="dev-type-select">
+                <div class="custom-select-trigger">
+                    <span>Normal</span>
+                </div>
+                <div class="custom-options">
+                    <div class="custom-option" data-value="normal">Normal</div>
+                    <div class="custom-option" data-value="metallic">Metallic</div>
+                    <div class="custom-option" data-value="wild">Wild</div>
+                    <div class="custom-option" data-value="bomb">Bomb</div>
+                </div>
+            </div>
+        </div>
+        <div class="settings-row">
+            <span>Infinite Money</span>
+            <label class="switch">
+                <input type="checkbox" id="infinite-money-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <button style="width:100%; background:var(--accent); color:#fff;" onclick="devSpawn()">Spawn</button>
+        <button id="dev-reset-btn" onclick="hardReset()">Reset</button>
+    </div>
+
+    <div class="header-stats">
+        <div class="stat-box">LEVEL <span id="max-display" class="stat-val">1</span></div>
+        <div class="stat-box">DINGOS <span id="cash-display" class="stat-val">0</span></div>
+    </div>
+
+    <div id="game-board-container">
+        <div id="game-board"></div>
+    </div>
+
+    <footer>
+        <button id="add-btn" onclick="spawnCoins()">Add Coins</button>
+        <button id="merge-btn" onclick="triggerMerge()">Merge</button>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
