@@ -1,3 +1,5 @@
+/* --- START OF FILE style.css --- */
+
 :root {
     --bg-color: #d8d8da;
     --slot-bg: #c8c8cc;
@@ -44,7 +46,9 @@ body {
     background-color: var(--bg-color);
     margin: 0;
     font-family: 'Outfit', sans-serif;
+    /* FIX: Use dvh to account for mobile address bars */
     height: 100vh;
+    height: 100dvh; 
     width: 100vw;
     display: flex;
     flex-direction: column;
@@ -325,7 +329,7 @@ body {
     height: 50px;
     align-items: center;
     flex-shrink: 0;
-    margin-top: 5px; /* Reduced from 10px */
+    margin-top: 5px;
 }
 
 .stat-box {
@@ -344,14 +348,19 @@ body {
 }
 
 footer {
-    height: 60px; /* Reduced from 80px */
+    height: auto;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
     flex-shrink: 0;
-    margin-bottom: 5px; /* Reduced from 10px */
+    /* FIX: Add safe area padding for modern phones */
+    padding-bottom: calc(15px + env(safe-area-inset-bottom));
+    padding-top: 10px;
+    background: transparent;
+    margin-bottom: 0;
+    z-index: 100;
 }
 
 #game-board-container {
@@ -360,10 +369,10 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px; /* Simplified padding */
+    padding: 10px; 
     padding-top: 10px;
     padding-bottom: 0;
-    overflow: hidden; /* Eliminated scroll */
+    overflow: hidden; 
     min-height: 0;
 }
 
@@ -468,6 +477,9 @@ button {
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: transform 0.1s;
+    /* Ensure buttons don't shrink on small screens */
+    flex-shrink: 0;
+    height: 50px;
 }
 
 button:active {
@@ -807,7 +819,8 @@ input:checked+.slider:before { transform: translateX(26px); }
 @media (max-width: 768px) {
     .header-stats { width: 95%; justify-content: center; gap: 20px; }
     .stat-box { padding: 6px 12px; font-size: 0.8rem; }
-    footer { padding: 0 10px; gap: 10px; height: 70px; }
+    /* FIX: Increase height for mobile touch targets */
+    footer { padding-top: 15px; gap: 10px; } 
     button { width: 45%; padding: 12px 0; font-size: 0.8rem; }
 }
 
